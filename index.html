@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Case de Product Design: redesenho da gestão de imóveis, do anúncio e da análise de inquilinos da Mell.ro, com protótipo navegável feito das telas originais.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mell.ro — Imóveis e inquilinos em uma jornada só">
+<meta property="og:description" content="Case de Product Design com protótipo navegável feito das telas originais do Figma.">
+<meta property="og:image" content="og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Mell.ro — Imóveis e inquilinos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --ground:#F1F4F8; --surface:#FFFFFF; --surface-2:#E9EEF5; --ink:#132033; --muted:#566478; --line:#D6DDE7;
+  --accent:#1B6FE4; --accent-ink:#0F4FB0; --accent-soft:#E2EDFD;
+  --ok:#2A8456; --ok-soft:#E1F2E8; --no:#BE423B; --no-soft:#FBE7E5; --wait:#A06D0E; --wait-soft:#FBF0DA; --deal:#5B4FC4; --deal-soft:#ECEAFB;
+  --shadow:0 1px 2px rgba(19,32,51,.06),0 8px 28px -12px rgba(19,32,51,.22);
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Public Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --gutter:clamp(16px,4vw,40px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0C131E; --surface:#131C2A; --surface-2:#1A2536; --ink:#E5EAF2; --muted:#98A6BA; --line:#26344A;
+    --accent:#5C9BFF; --accent-ink:#A9C8FF; --accent-soft:#16263F;
+    --ok:#5CC08A; --ok-soft:#14301F; --no:#F0837B; --no-soft:#3A1917; --wait:#E0B14F; --wait-soft:#33270F; --deal:#A79CFF; --deal-soft:#221F45;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0C131E; --surface:#131C2A; --surface-2:#1A2536; --ink:#E5EAF2; --muted:#98A6BA; --line:#26344A;
+  --accent:#5C9BFF; --accent-ink:#A9C8FF; --accent-soft:#16263F;
+  --ok:#5CC08A; --ok-soft:#14301F; --no:#F0837B; --no-soft:#3A1917; --wait:#E0B14F; --wait-soft:#33270F; --deal:#A79CFF; --deal-soft:#221F45;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+p{margin:0}
+.wrap{padding-inline:var(--gutter);max-width:1320px;margin:0 auto}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.01em}
+.eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:.5em;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.55em 1.05em;font-size:.92rem;font-weight:600;cursor:pointer;text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0C131E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#0C131E}}
+.btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn svg{width:1em;height:1em}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 28px);padding-block:28px;display:grid;gap:2px}
+.toc a{display:grid;grid-template-columns:2.2em 1fr;gap:.2em;text-decoration:none;color:var(--muted);font-size:.9rem;padding:.35em .5em;border-radius:6px;line-height:1.3}
+.toc a span:first-child{font-family:var(--mono);font-size:.75rem;padding-top:.15em}
+.toc a:hover{color:var(--ink);background:var(--surface-2)}
+.toc a.on{color:var(--ink);background:var(--surface);box-shadow:inset 2px 0 0 var(--accent)}
+.toc .toc-cta{margin-top:18px}
+main{min-width:0}
+@media (max-width:980px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;overflow-x:auto;gap:4px;padding-block:10px;background:var(--ground);border-bottom:1px solid var(--line);margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter);scrollbar-width:none}
+  .toc a{display:flex;gap:.4em;white-space:nowrap}
+  .toc .toc-cta{display:none}
+}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(40px,7vw,88px) clamp(32px,5vw,56px);display:grid;gap:36px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:.98;font-weight:700;max-width:14ch}
+.hero .lead{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--muted);max-width:60ch}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.facts div{background:var(--surface);padding:14px 16px;display:grid;gap:4px}
+.facts dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0;font-size:.95rem;font-weight:500;line-height:1.4}
+.stage-hero{position:relative;margin-top:8px;padding-bottom:40px}
+.stage-hero .desk{border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);width:86%;background:var(--surface);cursor:zoom-in}
+.stage-hero .phone{position:absolute;right:0;bottom:0;width:21%;min-width:120px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:6px solid var(--ink);background:var(--surface);aspect-ratio:416/860;cursor:zoom-in}
+.stage-hero .phone img{width:100%;height:auto;display:block}
+.stage-hero img{display:block;width:100%;height:auto}
+.howto{display:flex;gap:12px;align-items:flex-start;font-size:.95rem;color:var(--muted);max-width:64ch}
+.howto b{color:var(--ink);font-weight:600}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:.5em;box-shadow:0 0 0 4px var(--accent-soft)}
+
+/* ---------- sections ---------- */
+section.ch{padding-block:clamp(48px,7vw,96px);border-top:1px solid var(--line);display:grid;gap:28px;scroll-margin-top:24px}
+.ch-head{display:grid;gap:14px;max-width:68ch}
+.ch-head h2{font-size:clamp(1.8rem,3.6vw,2.8rem);line-height:1.05;font-weight:600}
+.ch-head .lead{font-size:1.1rem;color:var(--ink)}
+.prose{max-width:66ch;display:grid;gap:14px;color:var(--ink)}
+.prose p{color:var(--muted)}
+.row{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start}
+.row.r-7-5{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+@media (max-width:760px){.row.r-7-5{grid-template-columns:minmax(0,1fr)}}
+.ch-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* ---------- screen figures ---------- */
+figure.shot{margin:0;display:grid;gap:10px;min-width:0}
+.shot .frame{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);cursor:zoom-in;max-height:var(--crop,none)}
+.shot .frame img{display:block;width:100%;height:auto}
+.shot.cropped .frame::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(to bottom,transparent,var(--surface));pointer-events:none}
+.shot.plain .frame{border:0;box-shadow:none;background:transparent;border-radius:0}
+.shot.plain.cropped .frame::after{display:none}
+.shot.phone .frame{border-radius:20px;border:5px solid var(--ink)}
+.shot figcaption{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:.88rem;color:var(--muted)}
+.shot figcaption strong{color:var(--ink);font-weight:600}
+.shot figcaption .acts{margin-left:auto;display:flex;gap:6px}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent-ink);font-weight:600;font-size:.86rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);max-width:900px}
+@media (max-width:560px){.phones{grid-template-columns:repeat(2,minmax(0,1fr))}.phones figure:nth-child(3){display:none}}
+
+/* ---------- tensions & tables ---------- */
+.tensions{display:grid;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.tensions .t{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,.8fr);gap:20px;padding:18px 20px;border-top:1px solid var(--line)}
+.tensions .t:first-child{border-top:0}
+.tensions .t.head{background:var(--surface-2);padding-block:10px}
+.tensions .t.head span{font-family:var(--mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.tensions .t p{font-size:.95rem;color:var(--muted)}
+.tensions .t p:first-child{color:var(--ink);font-weight:500}
+.tensions a{font-size:.92rem;font-weight:600;text-decoration:none}
+@media (max-width:760px){.tensions .t{grid-template-columns:1fr;gap:6px}.tensions .t.head{display:none}}
+.actors{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+.actor{padding:16px;border-radius:10px;background:var(--surface);border:1px solid var(--line);display:grid;gap:6px;align-content:start}
+.actor h3{font-size:1.05rem;font-weight:600}
+.actor p{font-size:.92rem;color:var(--muted)}
+.scroll-x{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table.pat{border-collapse:collapse;width:100%;min-width:640px;font-size:.93rem}
+table.pat th,table.pat td{text-align:left;padding:12px 16px;border-top:1px solid var(--line);vertical-align:top}
+table.pat thead th{border-top:0;background:var(--surface-2);font-family:var(--mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+table.pat td:first-child{font-weight:600}
+table.pat td{color:var(--muted)}
+table.pat td:first-child{color:var(--ink)}
+.formula{font-family:var(--mono);font-size:.9rem;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:6px;color:var(--ink);overflow-x:auto}
+.formula span{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:.78rem;padding:.35em .7em;border-radius:6px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.callout{border-left:3px solid var(--accent);padding:4px 0 4px 16px;display:grid;gap:4px;max-width:62ch}
+.callout strong{font-family:var(--display);font-size:1.15rem;font-weight:600}
+.callout p{color:var(--muted);font-size:.95rem}
+
+/* ---------- status switcher ---------- */
+.switch{display:grid;gap:16px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{display:flex;align-items:center;gap:.5em;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:.5em .85em;cursor:pointer;font-weight:600;font-size:.92rem}
+.seg button i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.seg button[aria-pressed="true"]{background:var(--cs);border-color:var(--c)}
+.maps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.maps div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
+.maps dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.maps dd{margin:0;font-weight:600}
+
+/* ---------- learnings ---------- */
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}
+.learn div{display:grid;gap:8px;align-content:start;padding-top:14px;border-top:2px solid var(--ink)}
+.learn h3{font-size:1.2rem;font-weight:600}
+.learn p{color:var(--muted);font-size:.95rem}
+footer{padding-block:40px 64px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+/* ---------- decisions drawer ---------- */
+.dec{position:fixed;inset:0;z-index:60;display:flex;justify-content:flex-end}
+.dec .scrim{position:absolute;inset:0;background:rgba(10,18,30,.45)}
+.dec .panel{position:relative;width:min(460px,100%);height:100%;background:var(--surface);border-left:1px solid var(--line);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 22px) 24px calc(env(safe-area-inset-bottom,0px) + 28px);display:grid;gap:20px;align-content:start;animation:slidein .22s ease-out}
+@keyframes slidein{from{transform:translateX(24px);opacity:.3}to{transform:none;opacity:1}}
+.dec header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.dec h3{font-size:1.45rem;line-height:1.1;font-weight:600}
+.dec dl{margin:0;display:grid;gap:16px}
+.dec dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:4px}
+.dec dd{margin:0;font-size:.97rem;line-height:1.55}
+.x{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer;flex:none}
+.x:hover{border-color:var(--accent)}
+
+/* ---------- viewer ---------- */
+.viewer{position:fixed;inset:0;z-index:50;background:var(--ground);display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}
+.vbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 10px;background:var(--surface);border-bottom:1px solid var(--line)}
+.vtitle{display:grid;gap:0;min-width:0;flex:1 1 220px}
+.vtitle small{font-family:var(--mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.vtitle b{font-family:var(--display);font-size:1.12rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vtitle b .mono{color:var(--muted);font-weight:400;margin-left:.5em}
+.vtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.segs{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.segs button{border:0;background:var(--surface);padding:.42em .75em;font-size:.85rem;font-weight:600;cursor:pointer;border-left:1px solid var(--line)}
+.segs button:first-child{border-left:0}
+.segs button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.segs button:disabled{color:var(--line);cursor:not-allowed}
+.tbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:.42em .75em;font-size:.85rem;font-weight:600;cursor:pointer;display:inline-flex;gap:.4em;align-items:center}
+.tbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.tbtn:disabled{opacity:.45;cursor:not-allowed}
+.vnote{padding:8px 16px;font-size:.88rem;background:var(--accent-soft);color:var(--accent-ink);border-bottom:1px solid var(--line)}
+.vstage{position:relative;overflow:auto;overscroll-behavior:contain}
+.vstage .canvas{padding:24px 16px 48px;display:flex;justify-content:center}
+.vframe{position:relative;flex:none;border-radius:8px;overflow:hidden;box-shadow:var(--shadow);background:#fff;animation:fade .18s ease-out}
+.vframe.m{border-radius:18px}
+@keyframes fade{from{opacity:.4}to{opacity:1}}
+.vframe img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.hs{position:absolute;border:0;padding:0;background:transparent;cursor:pointer;border-radius:6px}
+.hs:hover{background:rgba(27,111,228,.10);box-shadow:inset 0 0 0 2px rgba(27,111,228,.55)}
+.hint .hs,.flash .hs{background:rgba(27,111,228,.14);box-shadow:inset 0 0 0 2px #1B6FE4;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:inset 0 0 0 2px rgba(27,111,228,.35);background:rgba(27,111,228,.06)}}
+.vlayer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.vlayer > *{pointer-events:auto}
+.scrim2{position:absolute;inset:0;background:rgba(10,18,30,.42)}
+.scrim2.clear{background:transparent}
+.ov{position:absolute}
+.ov .ovbox{position:relative}
+.ov img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.ov.menu,.ov.toast{filter:drop-shadow(0 8px 18px rgba(19,32,51,.18))}
+.ov.sheet .ovbox{border-radius:14px 14px 0 0;overflow:hidden}
+.toastw{animation:drop .2s ease-out}
+@keyframes drop{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
+.oos{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(380px,calc(100% - 32px));background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px;display:grid;gap:10px}
+.oos small{font-family:var(--mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.oos h4{margin:0;font-family:var(--display);font-size:1.3rem;font-weight:600}
+.oos p{color:var(--muted);font-size:.95rem}
+.oos .btn{justify-self:start;margin-top:6px}
+.vfoot{display:flex;gap:10px;align-items:center;padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--surface);border-top:1px solid var(--line);min-width:0}
+.vfoot select{font:inherit;font-size:.85rem;font-weight:600;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:.42em .6em;flex:none}
+.strip{display:flex;gap:6px;overflow-x:auto;min-width:0;scrollbar-width:thin}
+.strip button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:.38em .7em;font-size:.82rem;cursor:pointer;white-space:nowrap;color:var(--muted)}
+.strip button b{font-family:var(--mono);font-weight:500;margin-right:.45em;color:var(--muted)}
+.strip button[aria-current="true"]{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+.lbl-s{display:none}
+.kbd{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-left:auto;flex:none}
+@media (max-width:700px){.kbd{display:none}.vtitle b{font-size:1rem}.vbar{gap:8px}.tbtn span.lbl{display:none}.tbtn span.lbl-s{display:inline}.vtitle{flex-basis:100%}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<div class="layout">
+  <nav class="toc" aria-label="Capítulos">
+    <a href="#contexto"><span>—</span><span>Contexto</span></a>
+    <a href="#imoveis"><span>01</span><span>Imóveis</span></a>
+    <a href="#anunciar"><span>02</span><span>Anunciar</span></a>
+    <a href="#analise"><span>03</span><span>Análise de inquilinos</span></a>
+    <a href="#status"><span>04</span><span>Status e próxima ação</span></a>
+    <a href="#sistema"><span>05</span><span>Sistema</span></a>
+    <a href="#aprendizados"><span>—</span><span>O que ficou</span></a>
+    <div class="toc-cta"><button class="btn primary" data-open="home">Explorar o produto</button></div>
+  </nav>
+
+  <main>
+    <header class="hero" id="topo">
+      <div class="eyebrow">Case de Product Design · Mell.ro · Web app, desktop e mobile</div>
+      <h1>Imóveis e inquilinos em uma jornada só</h1>
+      <p class="lead">Redesenhei a parte da Mell.ro que o corretor usa todo dia: a gestão de imóveis, o anúncio, a análise de inquilinos e o acompanhamento de cada resultado. O desafio foi transformar regras de análise, garantia e publicação em estados que o corretor entende, cada um com um próximo passo claro.</p>
+      <div class="ctas">
+        <button class="btn primary" data-open="home">Explorar o produto <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <a class="btn" href="#contexto">Ler o case</a>
+      </div>
+      <dl class="facts">
+        <div><dt>Papel</dt><dd>Product Designer: todas as telas e a especificação de comportamento</dd></div>
+        <div><dt>Plataforma</dt><dd>Web app responsivo, desktop e mobile</dd></div>
+        <div><dt>Escopo</dt><dd>2 entidades · 63 telas · 52 modais e menus</dd></div>
+        <div><dt>Regras mapeadas</dt><dd>34 regras de negócio em 205 anotações</dd></div>
+      </dl>
+      <div class="stage-hero">
+        <div class="desk" data-go="home:1-7885" role="button" tabindex="0" aria-label="Abrir a Home do corretor no protótipo"><img width="2400" height="1097" src="img/1-7885.webp" alt="Home do corretor na Mell.ro, com contadores de imóveis, inquilinos, assinaturas e contratos, e atalhos para analisar inquilino e anunciar imóvel"></div>
+        <div class="phone" data-go="a:1-4057" role="button" tabindex="0" aria-label="Abrir o formulário de análise no celular"><img width="832" height="2880" src="img/1-4057.webp" alt="Formulário de análise no celular com três inquilinos em accordion"></div>
+      </div>
+      <p class="howto"><span class="dot" aria-hidden="true"></span><span><b>Cada capítulo tem um botão “Explorar fluxo”.</b> As telas são as originais do Figma, e as áreas clicáveis ficam em cima dos botões de verdade. Se não souber onde clicar, use “Mostrar cliques”.</span></p>
+    </header>
+
+    <section class="ch" id="contexto">
+      <div class="ch-head">
+        <div class="eyebrow">Contexto</div>
+        <h2>Uma locação tem muitas partes móveis</h2>
+        <p class="lead">A Mell.ro é uma plataforma de locação com aluguel garantido: o proprietário recebe mesmo quando o inquilino atrasa. Para isso, a plataforma publica o imóvel em portais, analisa quem vai alugar, gera o contrato e cobre inadimplência e danos.</p>
+      </div>
+      <div class="actors">
+        <div class="actor"><h3>Corretor ou proprietário</h3><p>Usa todas as telas deste case: anuncia, analisa inquilinos, envia contrato. A Home mostra o perfil ativo e permite trocá-lo.</p></div>
+        <div class="actor"><h3>Inquilinos</h3><p>São analisados em grupo e concluem a verificação de documentos por um link que o corretor envia.</p></div>
+        <div class="actor"><h3>Interessados</h3><p>Chegam de portais parceiros, como OLX, Chaves na Mão e Imóvel Web, e viram leads no painel do imóvel.</p></div>
+        <div class="actor"><h3>Participantes do repasse</h3><p>Recebem parte do aluguel. São configurados no passo de valores do anúncio.</p></div>
+      </div>
+      <div class="ch-head">
+        <h2 style="font-size:clamp(1.4rem,2.6vw,1.9rem)">Cinco tensões, todas registradas no arquivo</h2>
+        <p class="prose" style="color:var(--muted)">Cada uma vem das anotações que acompanham as telas. Nenhuma foi reconstruída depois.</p>
+      </div>
+      <div class="tensions">
+        <div class="t head"><span>Tensão</span><span>Evidência</span><span>Resposta</span></div>
+        <div class="t"><p>Os interessados em um imóvel chegavam só por e-mail.</p><p>Anotação do painel do imóvel: a lista de leads substitui “o fluxo atual que ocorre apenas via e-mail”.</p><a href="#imoveis">01 · Lista de interessados</a></div>
+        <div class="t"><p>Dois planos de garantia parecidos confundiam e deixavam proprietários sem cobertura de danos.</p><p>Registro da mudança: simplificar a escolha e evitar reclamações no pós-locação.</p><a href="#anunciar">02 · Plano único de 10%</a></div>
+        <div class="t"><p>Uma locação raramente é de uma pessoa: a renda somada precisa cobrir 3 vezes o aluguel.</p><p>Regra de sugestões do painel e modal “Composição de renda”.</p><a href="#analise">03 · Formulário para um grupo</a></div>
+        <div class="t"><p>Parte dos inquilinos já está na base, e os dados deles não podem ser editados por terceiros.</p><p>Regras de campos ocultos e de consentimento do titular.</p><a href="#analise">03 · Campos mascarados</a></div>
+        <div class="t"><p>Cada resultado de análise pede uma ação diferente, e consultar não pode mudar o status.</p><p>Regras de ações por status: “nenhuma ação informativa altera o status sem confirmação explícita”.</p><a href="#status">04 · Status que decide o botão</a></div>
+      </div>
+      <div class="callout"><strong>Meu papel</strong><p>Desenhei todas as telas das jornadas de Imóveis e Inquilinos, em desktop e mobile: listagens, painéis, formulário de análise, anúncio, modais e estados. E especifiquei no próprio arquivo o comportamento e as regras de cada componente para o time de desenvolvimento.</p></div>
+    </section>
+
+    <section class="ch" id="imoveis">
+      <div class="ch-head">
+        <div class="eyebrow">01 · Imóveis</div>
+        <h2>Da carteira aos interessados</h2>
+        <p class="lead">Desenhei a listagem de imóveis como uma carteira, com o status do anúncio separado do status da locação. O painel de cada imóvel virou uma lista de leads: quem se interessou, por qual portal chegou e em que ponto da análise está.</p>
+      </div>
+      <figure class="shot cropped" style="--crop:640px" data-trail="c" data-screen="1-6260" data-dec="imoveis_lista">
+        <div class="frame"><img width="2400" height="1766" src="img/1-6260.webp" loading="lazy" alt="Listagem de imóveis com contadores, busca, filtros e tabela com ID, endereço, cidade, aluguel, publicação e status"></div>
+        <figcaption><strong>Listagem de imóveis</strong><span class="mono">Figma 1:6260</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+      </figure>
+      <div class="row r-7-5">
+        <figure class="shot cropped" style="--crop:520px" data-trail="c" data-screen="1-6972" data-dec="imoveis_painel">
+          <div class="frame"><img width="2400" height="2053" src="img/1-6972.webp" loading="lazy" alt="Painel do imóvel com o card do imóvel e a lista de interessados, com origem, status da análise e documentação"></div>
+          <figcaption><strong>Painel com interessados</strong><span class="mono">Figma 1:6972</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+        <figure class="shot plain" data-trail="c" data-screen="1-6260" data-overlay="1-7498" data-dec="imoveis_deletar">
+          <div class="frame"><img width="800" height="1056" src="img/1-7498.webp" loading="lazy" alt="Modal Deletar imóvel pedindo o motivo, com a opção Outro motivo aberta"></div>
+          <figcaption><strong>Deletar com motivo</strong><span class="mono">Figma 1:7498</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+      </div>
+      <div class="ch-foot"><button class="btn primary" data-open="c">Explorar fluxo: gestão de imóveis</button><span class="mono" style="color:var(--muted)">13 telas · desktop, 1280 px e mobile</span></div>
+    </section>
+
+    <section class="ch" id="anunciar">
+      <div class="ch-head">
+        <div class="eyebrow">02 · Anunciar</div>
+        <h2>Regras de upload e de dinheiro, sem letra miúda</h2>
+        <p class="lead">Anunciar envolve duas decisões com regra por trás: quais fotos entram e o que entra no valor garantido. Na galeria, cada arquivo é validado sozinho e um erro não bloqueia os outros. Nos valores, IPTU e condomínio viraram uma pergunta de sim ou não, e o valor só é pedido quando a resposta é sim.</p>
+      </div>
+      <div class="row">
+        <figure class="shot cropped" style="--crop:560px" data-trail="d" data-screen="1-8713" data-dec="fotos">
+          <div class="frame"><img width="2400" height="2227" src="img/1-8713.webp" loading="lazy" alt="Passo de fotos do anúncio com a foto de capa em destaque e miniaturas"></div>
+          <figcaption><strong>Galeria com capa</strong><span class="mono">Figma 1:8713</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+        <figure class="shot cropped" style="--crop:560px" data-trail="d" data-screen="1-9209" data-dec="valores">
+          <div class="frame"><img width="2400" height="3250" src="img/1-9209.webp" loading="lazy" alt="Passo de valores e planos com o plano de 10% e as perguntas de IPTU e condomínio respondidas com sim"></div>
+          <figcaption><strong>IPTU e condomínio incluídos</strong><span class="mono">Figma 1:9209</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+      </div>
+      <div class="formula" aria-label="Cálculo do valor garantido">
+        <div>Total garantido = aluguel + IPTU <span>(se incluso)</span> + condomínio <span>(se incluso)</span></div>
+        <div>Taxa do plano = total garantido × 10%</div>
+      </div>
+      <div class="callout"><strong>O plano de 7% saiu</strong><p>Havia dois planos: 7% ao mês, só inadimplência, e 10% ao mês, com danos. Quem escolhia o mais barato ficava desprotegido contra danos. A versão final tem um único plano, com os benefícios num modal. <button class="linkbtn" data-decopen="plano">Decisões de UX</button></p></div>
+      <div class="ch-foot"><button class="btn primary" data-open="d">Explorar fluxo: anunciar imóvel</button><span class="mono" style="color:var(--muted)">19 telas · desktop e mobile</span></div>
+    </section>
+
+    <section class="ch" id="analise">
+      <div class="ch-head">
+        <div class="eyebrow">03 · Análise de inquilinos</div>
+        <h2>Um formulário para um grupo, não para uma pessoa</h2>
+        <p class="lead">Para aprovar uma locação, a renda somada precisa cobrir três vezes o aluguel, e parte dos inquilinos já está na base com dados que o corretor não pode alterar. Desenhei o formulário como um conjunto de blocos, um por inquilino, cada um com o próprio estado. A análise só libera quando todos estão prontos.</p>
+      </div>
+      <figure class="shot cropped" style="--crop:620px" data-trail="a" data-screen="1-3560" data-dec="analise_form">
+        <div class="frame"><img width="2400" height="2700" src="img/1-3560.webp" loading="lazy" alt="Formulário de análise com três inquilinos: o primeiro já cadastrado e mascarado, o segundo válido e o terceiro com erro"></div>
+        <figcaption><strong>Três inquilinos, três estados na mesma tela</strong><span class="mono">Figma 1:3560</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+      </figure>
+      <div class="chips" aria-label="Busca automática">
+        <span class="chip">CPF → busca ao digitar o último dígito</span>
+        <span class="chip">Telefone → busca ao digitar o último dígito</span>
+        <span class="chip">E-mail → busca 4 s depois</span>
+        <span class="chip">Erro → ao sair do campo</span>
+      </div>
+      <div class="row r-7-5">
+        <figure class="shot plain" data-trail="a" data-screen="1-3560" data-overlay="1-3801" data-dec="analise_mascara">
+          <div class="frame"><img width="1508" height="438" src="img/1-3801.webp" loading="lazy" alt="Campos de um inquilino já cadastrado, com nome, CPF, e-mail, telefone e renda mascarados"></div>
+          <figcaption><strong>Quem já existe aparece mascarado</strong><span class="mono">Figma 1:3801</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+        <figure class="shot plain" data-trail="a" data-screen="1-3813" data-overlay="1-3942" data-dec="analise_renda">
+          <div class="frame"><img width="800" height="764" src="img/1-3942.webp" loading="lazy" alt="Modal Composição de renda explicando que somar rendas aumenta as chances de aprovação"></div>
+          <figcaption><strong>A regra explicada na hora certa</strong><span class="mono">Figma 1:3942</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+      </div>
+      <div class="prose"><p>No celular, os blocos viram um accordion com um card aberto por vez. O card fechado que tem erro mostra um ícone de alerta, e o botão de análise só ativa quando todos estão prontos. <button class="linkbtn" data-decopen="analise_accordion">Decisões de UX</button></p></div>
+      <div class="phones">
+        <figure class="shot phone" data-trail="a" data-screen="1-4057"><div class="frame"><img width="832" height="2880" src="img/1-4057.webp" loading="lazy" alt="Inquilino 01 aberto, já cadastrado"></div><figcaption><strong>01 aberto</strong><span class="mono">1:4057</span></figcaption></figure>
+        <figure class="shot phone" data-trail="a" data-screen="1-4008"><div class="frame"><img width="832" height="2848" src="img/1-4008.webp" loading="lazy" alt="Inquilino 03 aberto com um campo em erro"></div><figcaption><strong>03 com erro</strong><span class="mono">1:4008</span></figcaption></figure>
+        <figure class="shot phone" data-trail="a" data-screen="1-4161"><div class="frame"><img width="832" height="1676" src="img/1-4161.webp" loading="lazy" alt="Três inquilinos fechados e prontos para análise"></div><figcaption><strong>Todos prontos</strong><span class="mono">1:4161</span></figcaption></figure>
+      </div>
+      <div class="ch-foot"><button class="btn primary" data-open="a">Explorar fluxo: análise de inquilinos</button><span class="mono" style="color:var(--muted)">10 telas · desktop e mobile</span></div>
+    </section>
+
+    <section class="ch" id="status">
+      <div class="ch-head">
+        <div class="eyebrow">04 · Status e próxima ação</div>
+        <h2>Cada status aponta o próximo passo</h2>
+        <p class="lead">Depois da análise, cada grupo cai em um de quatro status. O painel do inquilino é uma estrutura só, em que mudam três coisas: a sugestão, o botão principal e o menu de ações. O que é só consulta, como ver documentos ou abrir o WhatsApp, nunca muda o status.</p>
+      </div>
+      <div class="switch" id="switch">
+        <div class="seg" role="group" aria-label="Status da análise">
+          <button type="button" data-st="0" aria-pressed="true" style="--c:var(--no);--cs:var(--no-soft)"><i></i>Recusado</button>
+          <button type="button" data-st="1" aria-pressed="false" style="--c:var(--ok);--cs:var(--ok-soft)"><i></i>Aprovado</button>
+          <button type="button" data-st="2" aria-pressed="false" style="--c:var(--wait);--cs:var(--wait-soft)"><i></i>Aguardando</button>
+          <button type="button" data-st="3" aria-pressed="false" style="--c:var(--deal);--cs:var(--deal-soft)"><i></i>Em contrato</button>
+        </div>
+        <dl class="maps">
+          <div><dt>Botão principal</dt><dd id="sw-btn">Editar análise</dd></div>
+          <div><dt>Sugestão exibida</dt><dd id="sw-sug">Não é possível seguir com a locação</dd></div>
+          <div><dt>Menu do grupo</dt><dd id="sw-menu">Documentação, WhatsApp, substituir imóvel</dd></div>
+        </dl>
+        <figure class="shot cropped" style="--crop:640px" data-trail="b" data-screen="1-5024" data-dec="status_painel" id="sw-fig">
+          <div class="frame"><img width="2400" height="1924" id="sw-img" src="img/1-5024.webp" loading="lazy" alt="Painel do inquilino com status Recusado"></div>
+          <figcaption><strong id="sw-cap">Painel — Recusado</strong><span class="mono" id="sw-id">Figma 1:5024</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+        </figure>
+      </div>
+      <figure class="shot cropped" style="--crop:560px" data-trail="b" data-screen="1-4553" data-dec="status_lista">
+        <div class="frame"><img width="2400" height="1766" src="img/1-4553.webp" loading="lazy" alt="Listagem de inquilinos com contadores e tabela com status da documentação e da análise"></div>
+        <figcaption><strong>Listagem de inquilinos: duas tags independentes por grupo</strong><span class="mono">Figma 1:4553</span><span class="acts"><button class="linkbtn" data-decbtn>Decisões de UX</button></span></figcaption>
+      </figure>
+      <div class="ch-foot"><button class="btn primary" data-open="b">Explorar fluxo: status do inquilino</button><span class="mono" style="color:var(--muted)">12 telas · desktop e mobile</span></div>
+    </section>
+
+    <section class="ch" id="sistema">
+      <div class="ch-head">
+        <div class="eyebrow">05 · Sistema</div>
+        <h2>Um padrão, duas entidades, três larguras</h2>
+        <p class="lead">Imóveis e Inquilinos são entidades diferentes, mas o corretor não deveria aprender duas interfaces. Os mesmos sete padrões se repetem nas duas, cada um com uma versão para desktop e outra para o celular.</p>
+      </div>
+      <div class="scroll-x">
+        <table class="pat">
+          <thead><tr><th>Padrão</th><th>Desktop</th><th>Mobile</th><th>Onde se repete</th></tr></thead>
+          <tbody>
+            <tr><td>Ações contextuais</td><td>Dropdown no ⋮</td><td>Bottom sheet</td><td>Duas listagens, dois painéis, cards de inquilino</td></tr>
+            <tr><td>Tag de status com (i)</td><td>Modal central explicativo</td><td>Igual</td><td>Análise, documentação, imóvel e contrato</td></tr>
+            <tr><td>Filtros</td><td>Drawer da direita com “Mostrar N”</td><td>Bottom sheet</td><td>Duas listagens e painel do imóvel</td></tr>
+            <tr><td>Contadores</td><td>Linha de cards</td><td>Slider horizontal</td><td>Duas listagens</td></tr>
+            <tr><td>Tabela</td><td>Rola na horizontal abaixo de 1136 px, ações fixas</td><td>Vira lista de cards</td><td>Duas listagens e painel do imóvel</td></tr>
+            <tr><td>Estado vazio</td><td>Mensagem e ação principal</td><td>Igual</td><td>Duas listagens e interessados</td></tr>
+            <tr><td>Confirmação de cópia</td><td>Alerta no topo por 3 s</td><td>Igual</td><td>Link do imóvel e da documentação</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <figure class="shot plain" data-trail="b" data-screen="1-4553" data-overlay="1-4793"><div class="frame"><img width="1024" height="1196" src="img/1-4793.webp" loading="lazy" alt="Drawer de filtros de inquilinos: status, data da consulta, documentação e ordenação"></div><figcaption><strong>Filtros de inquilinos</strong><span class="mono">1:4793</span></figcaption></figure>
+        <figure class="shot plain" data-trail="c" data-screen="1-6260" data-overlay="1-6866"><div class="frame"><img width="1024" height="1276" src="img/1-6866.webp" loading="lazy" alt="Drawer de filtros de imóveis: status, publicação, faixa de aluguel e ordenação"></div><figcaption><strong>Filtros de imóveis</strong><span class="mono">1:6866</span></figcaption></figure>
+      </div>
+      <div class="ch-foot"><button class="btn primary" data-open="e">Explorar: a mesma tela em 1680 px, 1280 px e mobile</button></div>
+    </section>
+
+    <section class="ch" id="aprendizados">
+      <div class="ch-head">
+        <div class="eyebrow">O que ficou</div>
+        <h2>Três coisas que levo deste projeto</h2>
+      </div>
+      <div class="learn">
+        <div><h3>Regra ao lado da tela</h3><p>Documentei comportamento e regra junto de cada componente, no próprio arquivo. O Figma virou material de handoff, e não só de visual.</p></div>
+        <div><h3>Um padrão, duas entidades</h3><p>Menus, tags e filtros foram definidos uma vez e servem a Imóveis e a Inquilinos, no desktop e no celular.</p></div>
+        <div><h3>Status como acordo com o backend</h3><p>Os status exibidos refletem o backend, e nenhuma ação de consulta muda um status sem confirmação explícita.</p></div>
+      </div>
+      <div class="ch-head"><h3 style="font-size:1.25rem;font-weight:600">Como a mudança foi explicada dentro do produto</h3><p class="prose" style="color:var(--muted)">Um modal de tutorial aparece no primeiro acesso à seção de Inquilinos e de novo 48 horas depois, com link para o FAQ. A Home ganhou um banner para as novidades.</p></div>
+      <div class="row r-7-5">
+        <figure class="shot plain" data-trail="home" data-screen="1-7885"><div class="frame"><img width="1504" height="556" src="img/1-7924.webp" loading="lazy" alt="Banner Conheça os novos recursos da Mell.ro, com botão para acessar o FAQ"></div><figcaption><strong>Banner de novidades na Home</strong><span class="mono">1:7924</span></figcaption></figure>
+        <figure class="shot plain" data-trail="b" data-screen="1-4553" data-overlay="1-6193"><div class="frame"><img width="998" height="1104" src="img/1-6193.webp" loading="lazy" alt="Modal tutorial: Gerenciar inquilinos ficou mais fácil"></div><figcaption><strong>Tutorial de inquilinos</strong><span class="mono">1:6193</span></figcaption></figure>
+      </div>
+    </section>
+
+    <footer>
+      <span>Mell.ro · Case de Product Design</span>
+      <span>Telas exportadas do arquivo original no Figma. Nomes e valores nas telas são exemplos.</span>
+    </footer>
+  </main>
+</div>
+</div>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Protótipo navegável" hidden>
+  <div class="vbar">
+    <button class="x" id="vclose" aria-label="Fechar protótipo"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <div class="vtitle"><small id="vtrail">Trilha</small><b id="vname">Tela</b></div>
+    <div class="vtools">
+      <button class="tbtn" id="vback" aria-label="Voltar para a tela anterior"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="lbl">Voltar</span></button>
+      <div class="segs" role="group" aria-label="Largura da tela">
+        <button id="dev-d" data-dev="d">Desktop</button><button id="dev-c" data-dev="c">1280</button><button id="dev-m" data-dev="m">Mobile</button>
+      </div>
+      <button class="tbtn" id="vhint" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.5" y="1.5" width="11" height="11" rx="2.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="2.5 2"/></svg><span class="lbl">Mostrar cliques</span></button>
+      <button class="tbtn" id="vdec"><span class="lbl">Decisões de UX</span><span class="lbl-s">Decisões</span></button>
+    </div>
+  </div>
+  <div class="vnote" id="vnote" hidden></div>
+  <div class="vstage" id="vstage"><div class="canvas" id="vcanvas"></div></div>
+  <div class="vfoot">
+    <select id="vtrailsel" aria-label="Trocar de trilha"></select>
+    <div class="strip" id="vstrip"></div>
+    <span class="kbd">← → navega · H mostra cliques · Esc fecha</span>
+  </div>
+  <div class="vlayer" id="vlayer"></div>
+</div>
+
+<div class="dec" id="dec" hidden>
+  <div class="scrim" data-decclose></div>
+  <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="dec-t">
+    <header><div style="display:grid;gap:6px"><span class="eyebrow">Decisões de UX</span><h3 id="dec-t">—</h3><span class="mono" id="dec-id" style="color:var(--muted)"></span></div><button class="x" data-decclose aria-label="Fechar"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></header>
+    <dl>
+      <div><dt>Problema</dt><dd id="dec-p"></dd></div>
+      <div><dt>Regra de negócio</dt><dd id="dec-r"></dd></div>
+      <div><dt>Decisão de design</dt><dd id="dec-d"></dd></div>
+      <div><dt>Comportamento</dt><dd id="dec-c"></dd></div>
+      <div><dt>Estados</dt><dd><div class="chips" id="dec-e"></div></dd></div>
+    </dl>
+  </aside>
+</div>
+
+<script>
+const D = {"screens":{"1-7701":{"w":1200,"h":1250,"hs":[[952,508,32,32,"o:1:6486"],[952,572,32,32,"o:1:6492"],[571,381,110,42,"o:1:6866"],[872,158,141,42,"1:8547"]]},"1-8713":{"w":1680,"h":1559,"hs":[[1256,406,32,32,"o:1:10030"],[1223,1493,89,42,"1:9073"],[368,1493,76,42,"1:8612"]]},"1-7514":{"w":1168,"h":88,"hs":[]},"1-8335":{"w":416,"h":1752,"hs":[[24,796,368,42,"1:8419"],[32,1678,76,42,"1:8278"]]},"1-9925":{"w":416,"h":1752,"hs":[[352,360,32,32,"o:1:10030"],[116,1678,276,42,"1:8876"]]},"1-4349":{"w":416,"h":400,"hs":[[24,80,368,40,"1:5483"],[24,136,368,40,"o:1:4745"],[24,192,368,40,"oos:ct"],[24,248,368,40,"o:1:5363"],[24,304,368,40,"oos:ch"]]},"1-6514":{"w":1680,"h":1525,"hs":[[1249,158,159,42,"oos:gc"]]},"1-8547":{"w":1680,"h":1396,"hs":[[384,624,912,42,"1:8612"]]},"1-4744":{"w":400,"h":404,"hs":[[257,164,111,36,"oos:wa"],[257,268,111,36,"oos:wa"],[344,24,24,24,"close"]]},"1-4553":{"w":1680,"h":1236,"hs":[[272,492,1030,64,"o:1:4509"],[272,556,1030,64,"o:1:4503"],[272,620,1030,64,"o:1:4514"],[272,748,1030,64,"o:1:4520"],[1360,508,32,32,"o:1:4509"],[1360,572,32,32,"o:1:4503"],[1360,636,32,32,"o:1:4514"],[1360,764,32,32,"o:1:4520"],[1312,508,32,32,"o:1:4744"],[1168,513,95,22,"o:1:4346"],[1168,577,95,22,"o:1:4345"],[1168,641,111,22,"o:1:4347"],[1168,769,112,22,"o:1:4865"],[992,513,94,22,"o:1:4343"],[992,577,98,22,"o:1:4344"],[656,381,110,42,"o:1:4793"],[1259,158,149,42,"o:1:5001"]]},"1-9682":{"w":1680,"h":1000,"hs":[[0,0,1680,1000,"1:9209"]]},"1-4345":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-9209":{"w":1680,"h":2275,"hs":[[362,1350,102,30,"1:9682"],[362,1608,102,30,"1:9801"],[462,1296,69,42,"1:9073"],[406,685,124,30,"o:1:10238"],[384,378,117,24,"1:10117"],[369,2209,76,42,"1:9073"],[1220,2209,91,42,"1:6260"]]},"1-10009":{"w":416,"h":1019,"hs":[[32,945,360,42,"1:8419"]]},"1-5148":{"w":416,"h":1426,"hs":[[32,1360,360,42,"oos:ed"],[24,320,95,24,"o:1:4345"]]},"1-10030":{"w":276,"h":176,"hs":[[4,8,268,40,"1:10009"],[4,48,268,40,"close"],[4,88,268,40,"close"],[4,128,268,40,"close"]]},"1-4520":{"w":276,"h":56,"hs":[[4,8,268,40,"1:5708"]]},"1-6681":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-7518":{"w":400,"h":382,"hs":[[152,282,97,52,"close"],[344,24,24,24,"close"]]},"1-4351":{"w":416,"h":232,"hs":[[24,80,368,40,"1:5776"],[24,136,368,40,"oos:ch"]]},"1-5363":{"w":400,"h":316,"hs":[[258,224,110,52,"oos:na"],[32,224,101,52,"close"],[344,24,24,24,"close"]]},"1-4672":{"w":1680,"h":999,"hs":[[1259,158,149,42,"o:1:5001"]]},"1-4348":{"w":416,"h":456,"hs":[[24,80,368,40,"1:5148"],[24,136,368,40,"o:1:4745"],[24,192,368,40,"oos:ed"],[24,248,368,40,"o:1:4744"],[24,304,368,40,"o:1:5363"],[24,360,368,40,"oos:ch"]]},"1-5483":{"w":416,"h":1600,"hs":[[32,1534,360,42,"oos:ct"],[24,320,95,24,"o:1:4346"]]},"1-8278":{"w":416,"h":1508,"hs":[[40,527,336,42,"1:8335"]]},"1-9003":{"w":416,"h":2256,"hs":[[18,1280,102,30,"1:9494"],[18,1522,102,30,"1:9561"],[118,1132,69,42,"1:8876"],[62,621,124,30,"o:1:10298"],[40,314,117,24,"1:10055"],[115,2182,276,42,"1:6390"]]},"1-6460":{"w":416,"h":402,"hs":[[24,80,368,40,"1:7217"],[24,136,368,40,"toast:1:4712"],[24,192,368,40,"o:1:7602"],[24,248,368,40,"o:1:7500"]]},"1-6193":{"w":499,"h":552,"hs":[[195,460,110,52,"close"]]},"1-5415":{"w":1680,"h":1247,"hs":[[1272,158,136,42,"oos:ct"],[272,309,95,24,"o:1:4346"],[1274,443,134,36,"o:1:5319"],[1285,823,123,36,"o:1:5363"],[608,535,32,32,"o:1:5312"],[992,535,32,32,"o:1:5312"],[1376,535,32,32,"o:1:5312"],[336,603,82,24,"o:1:4343"],[336,743,85,24,"o:1:4344"],[1352,899,32,32,"o:1:5316"],[272,1131,81,52,"1:4553"]]},"1-6866":{"w":512,"h":638,"hs":[[343,564,129,42,"close"],[191,564,136,42,"close"],[448,24,40,40,"close"]]},"1-10117":{"w":1680,"h":1510,"hs":[[406,685,124,30,"o:1:10238"],[369,1444,76,42,"1:9209"],[1220,1444,91,42,"1:6260"]]},"1-5776":{"w":416,"h":1308,"hs":[[32,1242,360,42,"oos:gc"],[24,320,112,24,"o:1:4865"]]},"1-6492":{"w":276,"h":56,"hs":[[4,8,268,40,"1:6514"]]},"1-6486":{"w":276,"h":176,"hs":[[4,8,268,40,"1:6972"],[4,48,268,40,"toast:1:4712"],[4,88,268,40,"o:1:7602"],[4,128,268,40,"o:1:7500"]]},"1-7837":{"w":416,"h":1748,"hs":[]},"1-7356":{"w":1200,"h":1451,"hs":[[957,272,32,32,"o:1:7200"],[881,507,132,42,"1:3813"]]},"1-4745":{"w":400,"h":470,"hs":[[223,164,145,36,"toast:1:4712"],[223,302,145,36,"toast:1:4712"],[344,24,24,24,"close"]]},"1-7217":{"w":416,"h":1415,"hs":[[84,547,308,42,"1:4256"]]},"1-7301":{"w":400,"h":404,"hs":[[257,164,111,36,"oos:wa"],[257,268,111,36,"oos:wa"],[344,24,24,24,"close"]]},"1-6900":{"w":416,"h":1124,"hs":[[158,210,234,42,"1:8278"]]},"1-4743":{"w":416,"h":566,"hs":[[216,508,176,42,"close"],[24,508,176,42,"close"]]},"1-7171":{"w":276,"h":96,"hs":[[4,8,268,40,"oos:ed"],[4,48,268,40,"1:5024"]]},"1-4008":{"w":416,"h":1424,"hs":[[24,664,368,92,"1:4161"],[16,242,384,48,"1:4057"],[16,322,384,48,"1:3951"]]},"1-4395":{"w":416,"h":1124,"hs":[[70,210,322,42,"o:1:5001"]]},"1-3679":{"w":1680,"h":1860,"hs":[[1012,1799,204,42,"1:5908"],[458,1562,199,30,"o:1:3942"],[464,1799,76,42,"1:3560"]]},"1-4514":{"w":276,"h":176,"hs":[[4,8,268,40,"1:5908"],[4,48,268,40,"o:1:4745"],[4,88,268,40,"oos:sp"],[4,128,268,40,"oos:ch"]]},"1-4865":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-6633":{"w":416,"h":1575,"hs":[[24,228,368,42,"oos:gc"]]},"1-5969":{"w":416,"h":1600,"hs":[[32,1534,360,42,"oos:sp"],[24,320,111,24,"o:1:4347"]]},"1-4868":{"w":1200,"h":1250,"hs":[[965,508,32,32,"o:1:4509"],[965,572,32,32,"o:1:4503"],[965,636,32,32,"o:1:4514"],[917,508,32,32,"o:1:4744"],[1195,513,95,22,"o:1:4346"],[1195,577,95,22,"o:1:4345"],[571,381,110,42,"o:1:4793"],[864,158,149,42,"o:1:5001"]]},"1-10238":{"w":554,"h":524,"hs":[[494,20,32,32,"close"]]},"1-6390":{"w":416,"h":1984,"hs":[[88,524,304,90,"o:1:6460"],[360,524,32,32,"o:1:6460"],[88,800,304,90,"o:1:6460"],[360,800,32,32,"o:1:6460"],[158,210,234,42,"1:8278"]]},"1-4712":{"w":1280,"h":88,"hs":[]},"1-7094":{"w":1680,"h":1200,"hs":[[1352,272,32,32,"o:1:7200"],[1276,507,132,42,"1:3813"]]},"1-6733":{"w":1200,"h":1539,"hs":[[854,158,159,42,"oos:gc"]]},"1-4346":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-6891":{"w":416,"h":606,"hs":[[216,548,176,42,"close"],[24,548,176,42,"close"]]},"1-6972":{"w":1680,"h":1437,"hs":[[272,692,1030,64,"o:1:7156"],[272,756,1030,64,"o:1:7171"],[1360,709,32,32,"o:1:7156"],[1360,773,32,32,"o:1:7171"],[1312,709,32,32,"o:1:7301"],[1312,773,32,32,"o:1:7301"],[1352,272,32,32,"o:1:7200"],[1276,507,132,42,"1:3813"]]},"1-9801":{"w":1680,"h":1000,"hs":[[0,0,1680,1000,"1:9209"]]},"1-8419":{"w":416,"h":1752,"hs":[[352,360,32,32,"o:1:10030"],[116,1678,276,42,"1:8876"],[32,1678,76,42,"1:8335"]]},"1-5708":{"w":1680,"h":1155,"hs":[[1249,158,159,42,"oos:gc"],[272,309,112,24,"o:1:4865"],[336,508,82,24,"o:1:4343"],[336,648,85,24,"o:1:4344"],[272,1039,81,52,"1:4553"]]},"1-3560":{"w":1680,"h":1890,"hs":[[464,320,368,62,"o:1:3801"],[464,1148,368,92,"1:3679"],[458,1592,199,30,"o:1:3942"],[464,1829,76,42,"1:3813"]]},"1-5001":{"w":400,"h":316,"hs":[[258,224,110,52,"1:3813"],[32,224,101,52,"close"],[344,24,24,24,"close"]]},"1-7602":{"w":400,"h":382,"hs":[[138,282,124,52,"close"],[344,24,24,24,"close"]]},"1-10055":{"w":416,"h":1696,"hs":[[62,629,124,30,"o:1:10298"],[116,1622,276,42,"1:6390"]]},"1-4057":{"w":416,"h":1440,"hs":[[16,924,384,48,"1:3951"],[16,1004,384,48,"1:4008"],[24,296,368,62,"o:1:3943"],[32,1366,76,42,"1:4289"]]},"1-4289":{"w":416,"h":1258,"hs":[[24,912,188,36,"1:4057"],[18,968,199,30,"o:1:3942"],[32,1184,76,42,"1:4256"]]},"1-6260":{"w":1680,"h":1236,"hs":[[272,492,1050,64,"o:1:6486"],[272,556,1050,64,"o:1:6492"],[272,620,1050,64,"o:1:6486"],[1336,508,32,32,"o:1:6486"],[1336,572,32,32,"o:1:6492"],[1336,636,32,32,"o:1:6486"],[1160,513,101,22,"o:1:6468"],[1160,577,126,22,"o:1:6466"],[1160,641,129,22,"o:1:6470"],[656,381,110,42,"o:1:6866"],[1267,158,141,42,"1:8547"],[1121,158,122,42,"oos:xml"]]},"1-4161":{"w":416,"h":838,"hs":[[16,242,384,48,"1:4110"],[16,322,384,48,"1:3951"],[188,764,204,42,"1:5969"]]},"1-7260":{"w":416,"h":1245,"hs":[[84,547,308,42,"1:4256"]]},"1-5024":{"w":1680,"h":1347,"hs":[[1285,158,123,42,"oos:ed"],[272,309,95,24,"o:1:4345"],[1274,543,134,36,"o:1:5319"],[1285,923,123,36,"o:1:5363"],[608,635,32,32,"o:1:5312"],[992,635,32,32,"o:1:5312"],[1376,635,32,32,"o:1:5312"],[336,703,82,24,"o:1:4343"],[336,843,85,24,"o:1:4344"],[1352,999,32,32,"o:1:5316"],[272,1231,81,52,"1:4553"]]},"1-4352":{"w":416,"h":1984,"hs":[[24,524,368,90,"o:1:4349"],[360,524,32,32,"o:1:4349"],[24,662,368,90,"o:1:4348"],[360,662,32,32,"o:1:4348"],[24,800,368,90,"o:1:4348"],[360,800,32,32,"o:1:4348"],[24,938,368,90,"o:1:4349"],[360,938,32,32,"o:1:4349"],[24,1076,368,90,"o:1:4350"],[360,1076,32,32,"o:1:4350"],[24,1214,368,90,"o:1:4349"],[360,1214,32,32,"o:1:4349"],[24,1352,368,90,"o:1:4351"],[360,1352,32,32,"o:1:4351"],[24,1490,368,90,"o:1:4348"],[360,1490,32,32,"o:1:4348"],[24,1628,368,90,"o:1:4349"],[360,1628,32,32,"o:1:4349"],[24,1766,368,90,"o:1:4350"],[360,1766,32,32,"o:1:4350"],[70,210,322,42,"o:1:5001"],[350,426,42,42,"o:1:4743"]]},"1-4350":{"w":416,"h":430,"hs":[[24,80,368,40,"1:5969"],[24,136,368,40,"o:1:4745"],[24,192,368,40,"oos:sp"],[24,248,368,40,"o:1:4744"],[24,304,368,40,"o:1:5363"],[24,360,368,40,"oos:ch"]]},"1-10298":{"w":416,"h":906,"hs":[[376,8,32,32,"close"]]},"1-9561":{"w":416,"h":900,"hs":[[0,0,416,900,"1:9003"]]},"1-5908":{"w":1680,"h":1325,"hs":[[1283,158,125,42,"oos:sp"],[272,309,111,24,"o:1:4347"],[1274,521,134,36,"o:1:5319"],[1285,901,123,36,"o:1:5363"],[608,613,32,32,"o:1:5312"],[992,613,32,32,"o:1:5312"],[1376,613,32,32,"o:1:5312"],[336,681,82,24,"o:1:4343"],[336,821,85,24,"o:1:4344"],[1352,977,32,32,"o:1:5316"],[272,1209,81,52,"1:4553"]]},"1-4110":{"w":416,"h":1484,"hs":[[16,968,384,48,"1:3951"],[16,1048,384,48,"1:4008"],[188,1410,204,42,"1:5969"]]},"1-7924":{"w":752,"h":278,"hs":[]},"1-6219":{"w":400,"h":552,"hs":[[145,460,110,52,"close"]]},"1-8876":{"w":416,"h":2008,"hs":[[24,1010,62,42,"1:9003"],[24,1166,62,42,"1:9003"],[62,621,124,30,"o:1:10298"],[40,314,117,24,"1:10055"],[116,1934,276,42,"1:6390"]]},"1-5320":{"w":400,"h":316,"hs":[[266,224,102,52,"oos:na"],[32,224,101,52,"close"],[344,24,24,24,"close"]]},"1-6466":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-4509":{"w":276,"h":176,"hs":[[4,8,268,40,"1:5415"],[4,48,268,40,"o:1:4745"],[4,88,268,40,"oos:ct"],[4,128,268,40,"oos:ch"]]},"1-3942":{"w":400,"h":382,"hs":[[157,290,86,52,"close"],[344,24,24,24,"close"]]},"1-5312":{"w":284,"h":152,"hs":[[4,8,276,40,"toast:1:4712"],[4,56,268,40,"oos:wa"],[4,104,276,40,"o:1:5320"]]},"1-4256":{"w":416,"h":1198,"hs":[[24,296,368,62,"1:4289"],[18,908,199,30,"o:1:3942"]]},"1-3801":{"w":754,"h":219,"hs":[]},"1-7200":{"w":276,"h":216,"hs":[[4,8,268,40,"oos:ei"],[4,48,268,40,"toast:1:4712"],[4,88,268,40,"o:1:7602"],[4,128,268,40,"oos:an"],[4,168,268,40,"o:1:7500"]]},"1-5319":{"w":400,"h":316,"hs":[[261,224,107,52,"oos:na"],[32,224,101,52,"close"],[344,24,24,24,"close"]]},"1-3943":{"w":370,"h":453,"hs":[]},"1-4793":{"w":512,"h":598,"hs":[[343,524,129,42,"close"],[191,524,136,42,"close"],[448,24,40,40,"close"]]},"1-6468":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-6932":{"w":1680,"h":999,"hs":[[1267,158,141,42,"1:8547"]]},"1-8939":{"w":416,"h":2256,"hs":[[24,1132,62,42,"1:9003"],[24,1288,62,42,"1:9003"],[62,621,124,30,"o:1:10298"],[115,2182,276,42,"1:6390"]]},"1-7500":{"w":400,"h":472,"hs":[[48,324,304,24,"o:1:7498"],[32,380,81,52,"close"],[344,24,24,24,"close"]]},"1-3813":{"w":1680,"h":1032,"hs":[[464,320,368,62,"1:3560"],[464,678,188,36,"1:3560"],[458,734,199,30,"o:1:3942"],[464,971,76,42,"1:4553"]]},"1-4343":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-9073":{"w":1680,"h":1955,"hs":[[368,1180,62,42,"1:9209"],[368,1336,62,42,"1:9209"],[406,685,124,30,"o:1:10238"],[384,378,117,24,"1:10117"],[369,1889,76,42,"1:8713"],[1220,1889,91,42,"1:6260"]]},"1-7498":{"w":400,"h":528,"hs":[[224,436,144,52,"del"],[32,436,81,52,"close"],[344,24,24,24,"close"]]},"1-4347":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-4503":{"w":276,"h":216,"hs":[[4,8,268,40,"1:5024"],[4,48,268,40,"o:1:4745"],[4,88,268,40,"oos:ed"],[4,128,268,40,"o:1:5363"],[4,168,268,40,"oos:ch"]]},"1-7156":{"w":276,"h":136,"hs":[[4,8,268,40,"oos:ct"],[4,48,268,40,"1:3813"],[4,88,268,40,"1:5415"]]},"1-9494":{"w":416,"h":900,"hs":[[0,0,416,900,"1:9003"]]},"1-4344":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-7150":{"w":416,"h":344,"hs":[[24,80,368,40,"oos:ct"],[24,136,368,40,"1:4256"],[24,192,368,40,"1:5483"],[24,248,368,40,"o:1:7301"]]},"1-3951":{"w":416,"h":1470,"hs":[[16,242,384,48,"1:4057"],[16,1034,384,48,"1:4008"]]},"1-8612":{"w":1680,"h":1655,"hs":[[368,1083,944,42,"1:8713"],[368,1589,76,42,"1:8547"]]},"1-6470":{"w":400,"h":240,"hs":[[344,24,24,24,"close"]]},"1-7885":{"w":1680,"h":768,"hs":[[368,602,67,30,"1:6260"],[559,602,67,30,"1:4553"],[1080,222,300,48,"o:1:5001"]]},"1-5316":{"w":284,"h":56,"hs":[[4,8,276,40,"1:6972"]]}},"titles":{"1-7885":"Home do corretor","1-7837":"Home do corretor","1-3813":"Formulário vazio","1-3560":"Três inquilinos, três estados","1-3679":"Tudo pronto para análise","1-4256":"Formulário vazio","1-4289":"Um inquilino válido","1-4057":"Inquilino 01 aberto (já cadastrado)","1-3951":"Inquilino 02 aberto (válido)","1-4008":"Inquilino 03 aberto (com erro)","1-4161":"Todos fechados e prontos","1-4110":"Tudo pronto, 01 aberto","1-4553":"Listagem de inquilinos","1-4868":"Listagem de inquilinos em 1280 px","1-4672":"Listagem vazia","1-4352":"Listagem de inquilinos","1-4395":"Listagem vazia","1-5024":"Painel — Recusado","1-5415":"Painel — Aprovado","1-5908":"Painel — Aguardando","1-5708":"Painel — Em contrato","1-5148":"Painel — Recusado","1-5483":"Painel — Aprovado","1-5969":"Painel — Aguardando","1-5776":"Painel — Em contrato","1-6260":"Listagem de imóveis","1-7701":"Listagem de imóveis em 1280 px","1-6932":"Listagem vazia","1-6390":"Listagem de imóveis","1-6900":"Listagem vazia","1-6972":"Painel do imóvel com interessados","1-7094":"Painel do imóvel sem interessados","1-7356":"Painel do imóvel em 1280 px","1-7217":"Painel do imóvel com interessados","1-7260":"Painel do imóvel sem interessados","1-6514":"Painel do imóvel em contrato","1-6733":"Painel em contrato em 1280 px","1-6633":"Painel do imóvel em contrato","1-8547":"Fotos — vazio","1-8612":"Fotos — erro de upload","1-8713":"Fotos — galeria com capa","1-8278":"Fotos — vazio","1-8335":"Fotos — erro de upload","1-8419":"Fotos — galeria com capa","1-9925":"Fotos — galeria","1-10009":"Editor de foto","1-9073":"Valores — sem resposta","1-9209":"Valores — IPTU e condomínio incluídos","1-9682":"Ajuda do IPTU","1-9801":"Ajuda do condomínio","1-10117":"Plano único de 10%","1-8876":"Valores — sem resposta","1-8939":"Valores — sem resposta","1-9003":"Valores — IPTU e condomínio incluídos","1-9494":"Ajuda do IPTU","1-9561":"Ajuda do condomínio","1-10055":"Plano único de 10%","1-3942":"Composição de renda","1-3801":"Campos mascarados","1-3943":"Campos mascarados","1-4503":"Ações — Recusado","1-4509":"Ações — Aprovado","1-4514":"Ações — Aguardando","1-4520":"Ações — Em contrato","1-4345":"Status Recusado","1-4346":"Status Aprovado","1-4347":"Status Aguardando","1-4865":"Status Em contrato","1-4343":"Documentação pendente","1-4344":"Documentação verificada","1-4744":"Contato dos inquilinos","1-4745":"Documentação dos inquilinos","1-4793":"Filtros","1-4743":"Filtros","1-5001":"Analisar inquilino","1-5312":"Ações do inquilino","1-5316":"Ações do imóvel","1-5319":"Adicionar inquilino","1-5320":"Remover inquilino","1-5363":"Substituir imóvel","1-4712":"Link copiado","1-4348":"Ações — Recusado","1-4349":"Ações — Aprovado","1-4350":"Ações — Aguardando","1-4351":"Ações — Em contrato","1-6486":"Ações — imóvel disponível","1-6492":"Ações — imóvel em contrato","1-7518":"Publicar imóvel","1-7602":"Despublicar imóvel","1-7500":"Deletar imóvel","1-7498":"Deletar imóvel — outro motivo","1-7514":"Imóvel deletado","1-6468":"Status Disponível","1-6470":"Status Em negociação","1-6466":"Status Contrato ativo","1-6866":"Filtros de imóveis","1-6891":"Filtros de imóveis","1-7156":"Ações — negociação aprovada","1-7171":"Ações — negociação recusada","1-7200":"Ações do imóvel","1-7301":"Contato dos interessados","1-6681":"Contrato ativo","1-6460":"Ações do imóvel","1-7150":"Ações — negociação aprovada","1-10030":"Ações da foto","1-10238":"Benefícios do plano","1-10298":"Benefícios do plano","1-6193":"Tutorial de inquilinos","1-6219":"Tutorial de inquilinos","1-7924":"Banner de novidades","1-8030":"Banner de novidades","1-8156":"Banner","1-8136":"Banner"},"notes":{"1-3560":"Preenchimento simulado: os três inquilinos já aparecem em situações diferentes. Clique no campo com erro do inquilino 03 para corrigir.","1-3679":"Realizar análise leva ao painel em Aguardando. A tela de carregamento não faz parte do case.","1-4161":"Realizar análise leva ao painel em Aguardando. A tela de carregamento não faz parte do case.","1-4110":"Realizar análise leva ao painel em Aguardando. A tela de carregamento não faz parte do case.","1-4008":"O card 03 tem um campo com erro. Clique nele para corrigir.","1-4868":"Abaixo de 1136 px a tabela rola na horizontal e a coluna de ações fica fixa à direita.","1-7701":"Abaixo de 1136 px a tabela rola na horizontal e a coluna de ações fica fixa à direita.","1-7356":"Abaixo de 1136 px a tabela rola na horizontal e a coluna de ações fica fixa à direita.","1-6733":"Abaixo de 1136 px a tabela rola na horizontal e a coluna de ações fica fixa à direita.","1-9682":"Clique em qualquer lugar para fechar a ajuda.","1-9801":"Clique em qualquer lugar para fechar a ajuda.","1-9494":"Toque em qualquer lugar para fechar a ajuda.","1-9561":"Toque em qualquer lugar para fechar a ajuda.","1-10117":"Versão final do passo 3: só o plano de 10% com cobertura de danos. O plano de 7% foi descontinuado.","1-10055":"Versão final do passo 3: só o plano de 10% com cobertura de danos. O plano de 7% foi descontinuado.","1-10009":"Editor de imagem, desenhado para o celular.","1-4553":"A linha inteira abre as ações daquele grupo. Os ícones (i) das tags explicam cada status.","1-6972":"Cada linha é um grupo de interessados. O menu muda conforme o status da negociação."},"oos":{"ed":["Editar análise","A edição usa o fluxo de análise que já existia na plataforma, fora deste trabalho."],"ct":["Enviar contrato","Leva ao fluxo de contrato, que não faz parte deste trabalho."],"sp":["Falar conosco","Leva ao atendimento da Mell.ro."],"gc":["Gerenciar contrato","Abre o painel do contrato, na seção de Contratos."],"ch":["Negociações em chat","A aba de negociações por chat não faz parte deste trabalho."],"wa":["Conversar no WhatsApp","Abre a conversa no WhatsApp com uma mensagem pronta, com o nome do corretor e o link do imóvel."],"na":["Nova análise","Mudar o grupo ou o imóvel refaz a análise do grupo. A tela de carregamento não faz parte do case."],"xml":["Integrar XML","Leva à tela de integrações, fora deste trabalho."],"ei":["Editar imóvel","Abre o mesmo formulário usado no cadastro do imóvel."],"an":["Ver imóvel em anúncio","Abre a página pública do imóvel."]},"kinds":{"menu":["1-4503","1-4509","1-4514","1-4520","1-5312","1-5316","1-6486","1-6492","1-7156","1-7171","1-7200","1-10030"],"sheet":["1-4348","1-4349","1-4350","1-4351","1-6460","1-7150","1-4743","1-6891","1-10298"],"drawer":["1-4793","1-6866"],"toast":["1-4712","1-7514"]},"groups":[["1-7885",null,"1-7837"],["1-3813",null,"1-4256"],["1-3560",null,"1-4057"],["1-3679",null,"1-4110"],["1-4553","1-4868","1-4352"],["1-4672",null,"1-4395"],["1-5024",null,"1-5148"],["1-5415",null,"1-5483"],["1-5908",null,"1-5969"],["1-5708",null,"1-5776"],["1-6260","1-7701","1-6390"],["1-6932",null,"1-6900"],["1-6972","1-7356","1-7217"],["1-7094",null,"1-7260"],["1-6514","1-6733","1-6633"],["1-8547",null,"1-8278"],["1-8612",null,"1-8335"],["1-8713",null,"1-8419"],["1-9073",null,"1-8876"],["1-9209",null,"1-9003"],["1-9682",null,"1-9494"],["1-9801",null,"1-9561"],["1-10117",null,"1-10055"]],"trails":{"home":{"name":"Visão geral","d":["1-7885"],"m":["1-7837"]},"a":{"name":"Análise de inquilinos","d":["1-3813","1-3560","1-3679"],"m":["1-4256","1-4289","1-4057","1-3951","1-4008","1-4161","1-4110"]},"b":{"name":"Status do inquilino","d":["1-4553","1-4672","1-5024","1-5415","1-5908","1-5708"],"m":["1-4352","1-4395","1-5148","1-5483","1-5969","1-5776"]},"c":{"name":"Gestão de imóveis","d":["1-6260","1-6932","1-6972","1-7094","1-6514"],"m":["1-6390","1-6900","1-7217","1-7260","1-6633"]},"d":{"name":"Anunciar imóvel","d":["1-8547","1-8612","1-8713","1-9073","1-9209","1-9682","1-9801","1-10117"],"m":["1-8278","1-8335","1-8419","1-9925","1-10009","1-8876","1-8939","1-9003","1-9494","1-9561","1-10055"]},"e":{"name":"Responsividade","d":["1-4553","1-6260","1-6972","1-6514"],"c":["1-4868","1-7701","1-7356","1-6733"],"m":["1-4352","1-6390","1-7217","1-6633"]}},"decisions":{"imoveis_lista":{"t":"Listagem de imóveis","id":"1:6260","p":"Saber, para cada imóvel, se ele está no ar e em que ponto da locação está.","r":"Disponível = nenhuma análise; Em negociação = ao menos uma análise; Contrato ativo = contrato e primeiro pagamento. O aluguel aparece sem IPTU e condomínio.","d":"Colunas separadas para \"Publicado\" e \"Status\", contadores no topo e um menu de ações que muda conforme o status.","c":"Filtros num drawer com a contagem de resultados ao vivo. Abaixo de 1136 px a tabela rola e a coluna de ações fica fixa.","e":["Vazia","Padrão","1280 px","Mobile"]},"imoveis_painel":{"t":"Painel do imóvel com interessados","id":"1:6972","p":"Os interessados em um imóvel chegavam ao corretor só por e-mail, fora da plataforma.","r":"A lista se atualiza quando a negociação ganha novos inquilinos. O modal de contato só aparece quando há mais de um inquilino.","d":"Uma linha por grupo de interessados, com a origem do lead, o status da análise e o da documentação. O menu muda conforme o status.","c":"WhatsApp com mensagem pronta (nome do corretor e link do imóvel). Filtro por status e documentação.","e":["Com interessados","Sem interessados","Contrato ativo"]},"imoveis_deletar":{"t":"Deletar imóvel com motivo","id":"1:7498","p":"Entender por que os imóveis saem da plataforma.","r":"A exclusão é lógica e o histórico fica. O motivo vai para um campo novo no banco, inclusive o texto livre de \"Outro\".","d":"Motivo obrigatório, com cinco opções fechadas e \"Outro\" com campo livre.","c":"O botão só fica ativo com uma opção marcada. Ao confirmar, volta à listagem com um alerta de sucesso.","e":["Sem opção","Opção marcada","\"Outro\" aberto"]},"fotos":{"t":"Galeria de fotos","id":"1:8713","p":"Uploads em lote chegam com arquivos fora do padrão.","r":"Formato e tamanho validados arquivo a arquivo. Mínimo recomendado de 5 fotos e máximo de 20. A primeira foto vira capa.","d":"Capa em destaque e miniaturas quadradas, com um menu ⋮ em cada foto: Editar, Usar como capa, Reordenar, Deletar.","c":"Erro num banner que some em 4 s; o espaço da foto inválida fica vazio e as válidas seguem. Reordenar só aparece com 3 fotos ou mais.","e":["Vazio","Erro de upload","Galeria","Editor"]},"valores":{"t":"IPTU e condomínio","id":"1:9209","p":"Incluir IPTU e condomínio muda o valor cobrado, o valor garantido e a taxa, e isso precisa ficar claro antes da escolha.","r":"Resposta obrigatória. Total garantido = aluguel + IPTU + condomínio incluídos; a taxa do plano incide sobre o total.","d":"Uma pergunta de sim ou não antes do valor. O campo de valor só aparece com SIM, junto com um aviso de que o valor entra na garantia.","c":"NÃO esconde o campo e limpa o valor. \"Como funciona?\" abre uma ajuda com exemplo em reais.","e":["Sem resposta","SIM com valores","Ajuda aberta"]},"plano":{"t":"Plano único de garantia","id":"1:10117","p":"Dois planos parecidos, de 7% e de 10%, confundiam, e quem escolhia o mais barato ficava sem cobertura de danos.","r":"O plano de 7% foi descontinuado. A única garantia passa a ser a de 10% ao mês, com danos.","d":"Um único card \"Mais escolhido\" com os benefícios principais. A lista completa fica num modal.","c":"\"Veja mais benefícios\" abre o modal com as oito coberturas.","e":["Card único","Modal de benefícios"]},"analise_form":{"t":"Formulário de análise","id":"1:3560","p":"Uma análise pode ter vários inquilinos, cada um numa situação cadastral diferente.","r":"Todos os blocos precisam estar válidos para liberar a análise (R04). O primeiro bloco é fixo. Dados de quem já existe na base não podem ser editados (R02).","d":"Um bloco por inquilino, com mensagem de status própria. Sem botão \"salvar\": o bloco se valida sozinho.","c":"Busca automática ao completar o CPF ou o telefone, e 4 s depois de digitar o e-mail. O campo entra em erro ao perder o foco.","e":["Vazio","Erro","Válido","Já cadastrado","Tudo pronto"]},"analise_mascara":{"t":"Campos mascarados","id":"1:3801","p":"O corretor pode cadastrar alguém que já está na base da Mell.ro.","r":"Os dados de quem já existe só aparecem mascarados e bloqueados. Só o próprio inquilino pode alterá-los.","d":"Mostrar a chave de busca e mascarar o resto, mantendo parte do dado para reconhecimento: últimos dígitos, domínio do e-mail, formato monetário.","c":"Os campos ficam preenchidos e desabilitados, com uma mensagem pedindo para solicitar a atualização ao inquilino.","e":["Mascarado"]},"analise_accordion":{"t":"Accordion no mobile","id":"1:4008","p":"Três formulários de seis campos numa tela pequena.","r":"A mesma validação por inquilino; a análise só é enviada com todos os campos de todos os inquilinos corretos.","d":"Um card aberto por vez. O card fechado que tem erro mostra um ícone de alerta.","c":"Abrir um card fecha os outros. Um novo inquilino entra aberto e vazio. \"Limpar dados\" age só no card dele.","e":["Aberto","Fechado","Fechado com alerta"]},"analise_renda":{"t":"Composição de renda","id":"1:3942","p":"Por que adicionar mais gente à análise?","r":"Se a renda somada for menor que 3 vezes o aluguel, a sugestão é adicionar inquilinos.","d":"Um link \"Por que adicionar outro inquilino?\" ao lado do botão de adicionar, no momento da decisão.","c":"Modal central, que fecha no X ou clicando fora.","e":["Modal"]},"status_lista":{"t":"Listagem de inquilinos","id":"1:4553","p":"Acompanhar dezenas de grupos com dois processos correndo em paralelo: a análise e a documentação.","r":"A documentação só fica Verificada com todos os perfis concluídos. As ações disponíveis dependem do status.","d":"Duas tags independentes por linha, cada uma com (i). Contadores focados no que pede ação: aprovados sem contrato e documentação pendente. WhatsApp direto na linha.","c":"A linha inteira abre o menu. Passar o mouse mostra os nomes completos e o endereço. Filtros com contagem ao vivo.","e":["Vazia","Padrão","1280 px","Mobile"]},"status_painel":{"t":"Painel do inquilino","id":"1:5024 · 1:5415","p":"Cada resultado exige uma ação diferente, e mudar o grupo invalida a análise anterior.","r":"O botão principal depende do status. Enviar contrato exige todos aprovados e verificados. Adicionar, remover ou trocar o imóvel refaz a análise.","d":"A mesma tela para os quatro status: só mudam a sugestão, o botão principal e o menu. Confirmação avisando que a análise será refeita.","c":"Menu por inquilino: copiar link da documentação, WhatsApp, remover. Alerta \"Link copiado\" por 3 s.","e":["Recusado","Aprovado","Aguardando","Em contrato"]}},"decFor":{"1-6260":"imoveis_lista","1-7701":"imoveis_lista","1-6390":"imoveis_lista","1-6972":"imoveis_painel","1-7356":"imoveis_painel","1-7217":"imoveis_painel","1-8713":"fotos","1-8419":"fotos","1-8612":"fotos","1-8335":"fotos","1-9209":"valores","1-9003":"valores","1-9073":"valores","1-8876":"valores","1-10117":"plano","1-10055":"plano","1-3813":"analise_form","1-3560":"analise_form","1-3679":"analise_form","1-4256":"analise_form","1-4289":"analise_form","1-4057":"analise_accordion","1-3951":"analise_accordion","1-4008":"analise_accordion","1-4161":"analise_accordion","1-4110":"analise_accordion","1-4553":"status_lista","1-4868":"status_lista","1-4352":"status_lista","1-5024":"status_painel","1-5415":"status_painel","1-5908":"status_painel","1-5708":"status_painel","1-5148":"status_painel","1-5483":"status_painel","1-5969":"status_painel","1-5776":"status_painel"}};
+(function(){
+const $ = s => document.querySelector(s);
+const viewer=$('#viewer'), stage=$('#vstage'), canvas=$('#vcanvas'), layer=$('#vlayer');
+const st={trail:'home',screen:null,dev:'d',hist:[],hint:false,scale:1,ov:null};
+const devOf = id => { const s=D.screens[id]; if(!s) return 'd'; return s.w===416?'m':(s.w===1200?'c':'d'); };
+const nid = t => t.replace(':','-');
+const title = id => D.titles[id]||id;
+const trailOf = id => { if(D.trails[st.trail] && ['d','c','m'].some(k=>(D.trails[st.trail][k]||[]).includes(id))) return st.trail; for(const k of ['a','b','c','d','e','home']){ const t=D.trails[k]; if(['d','c','m'].some(x=>(t[x]||[]).includes(id))) return k;} return st.trail; };
+const groupOf = id => D.groups.find(g=>g.includes(id));
+
+/* ---------- decisions ---------- */
+const dec=$('#dec');
+function openDec(key){ const x=D.decisions[key]; if(!x) return; $('#dec-t').textContent=x.t; $('#dec-id').textContent='Figma '+x.id; $('#dec-p').textContent=x.p; $('#dec-r').textContent=x.r; $('#dec-d').textContent=x.d; $('#dec-c').textContent=x.c; const e=$('#dec-e'); e.innerHTML=''; x.e.forEach(s=>{const c=document.createElement('span');c.className='chip';c.textContent=s;e.appendChild(c);}); dec.hidden=false; dec.querySelector('.x').focus(); }
+function closeDec(){ dec.hidden=true; }
+dec.addEventListener('click',e=>{ if(e.target.closest('[data-decclose]')) closeDec(); });
+
+/* ---------- viewer ---------- */
+function openViewer(trail, screen, overlay){
+  st.trail=trail; st.hist=[];
+  const t=D.trails[trail];
+  let dev = window.innerWidth<700 && t.m ? 'm' : 'd';
+  if(screen){ dev=devOf(screen); if(window.innerWidth<700){ const g=groupOf(screen); if(g&&g[2]){screen=g[2];dev='m';} } }
+  st.dev=dev;
+  const first = screen || (t[dev]||t.d)[0];
+  viewer.hidden=false; document.documentElement.style.overflow='hidden';
+  fillTrailSel();
+  show(first,false);
+  if(overlay) requestAnimationFrame(()=>openOverlay(overlay,null));
+  $('#vclose').focus();
+}
+function closeViewer(){ closeOverlay(); viewer.hidden=true; document.documentElement.style.overflow=''; }
+function fillTrailSel(){ const s=$('#vtrailsel'); s.innerHTML=''; for(const k of ['home','a','b','c','d','e']){ const o=document.createElement('option'); o.value=k; o.textContent=D.trails[k].name; s.appendChild(o);} s.value=st.trail; }
+$('#vtrailsel').addEventListener('change',e=>{ const t=D.trails[e.target.value]; st.trail=e.target.value; const list=t[st.dev]||t.d; st.dev=t[st.dev]?st.dev:'d'; show(list[0]); });
+
+function computeScale(s){ const avail=stage.clientWidth-32; return Math.min(1, avail/s.w); }
+function show(id, push=true){
+  const s=D.screens[id]; if(!s) return;
+  closeOverlay();
+  if(push && st.screen && st.screen!==id) st.hist.push(st.screen);
+  st.screen=id; st.dev=devOf(id); st.trail=trailOf(id);
+  st.scale=computeScale(s);
+  canvas.innerHTML='';
+  const f=document.createElement('div'); f.className='vframe'+(st.dev==='m'?' m':'')+(st.hint?' hint':''); f.style.width=Math.round(s.w*st.scale)+'px';
+  const img=new Image(); img.src='img/'+id+'.webp'; img.alt=title(id); img.draggable=false; f.appendChild(img);
+  s.hs.forEach(h=>f.appendChild(hsBtn(h,s.w,s.h)));
+  f.addEventListener('click',e=>{ if(!e.target.closest('.hs')){ f.classList.add('flash'); setTimeout(()=>f.classList.remove('flash'),900);} });
+  canvas.appendChild(f); stage.scrollTop=0; stage.scrollLeft=0;
+  // header
+  $('#vtrail').textContent=D.trails[st.trail].name;
+  $('#vname').innerHTML=''; $('#vname').append(title(id)); const m=document.createElement('span'); m.className='mono'; m.textContent=id.replace('-',':'); $('#vname').appendChild(m);
+  const n=D.notes[id]; $('#vnote').hidden=!n; $('#vnote').textContent=n||'';
+  const g=groupOf(id);
+  ['d','c','m'].forEach((k,i)=>{ const b=$('#dev-'+k); const target=g?g[i]:(devOf(id)===k?id:null); b.disabled=!target; b.setAttribute('aria-pressed',String(devOf(id)===k)); b.dataset.target=target||''; });
+  $('#dev-c').hidden = !(g && g[1]);
+  const dk=D.decFor[id]; $('#vdec').disabled=!dk; $('#vdec').dataset.key=dk||'';
+  $('#vback').disabled=!st.hist.length;
+  $('#vtrailsel').value=st.trail;
+  renderStrip();
+  // preload targets
+  s.hs.forEach(h=>{ const t=h[4]; if(/^(1:|o:)/.test(t)){ const p=new Image(); p.src='img/'+nid(t.replace(/^o:/,''))+'.webp'; } });
+}
+function renderStrip(){
+  const t=D.trails[st.trail]; const list=t[st.dev]||t.d; const strip=$('#vstrip'); strip.innerHTML='';
+  list.forEach((id,i)=>{ const b=document.createElement('button'); b.innerHTML='<b>'+String(i+1).padStart(2,'0')+'</b>'; b.append(title(id)); b.setAttribute('aria-current',String(id===st.screen)); b.addEventListener('click',()=>show(id)); strip.appendChild(b); if(id===st.screen) requestAnimationFrame(()=>b.scrollIntoView({block:'nearest',inline:'center'})); });
+}
+function hsBtn(h,W,H){ const b=document.createElement('button'); b.className='hs'; b.type='button';
+  b.style.left=(h[0]/W*100)+'%'; b.style.top=(h[1]/H*100)+'%'; b.style.width=(h[2]/W*100)+'%'; b.style.height=(h[3]/H*100)+'%';
+  const t=h[4]; b.setAttribute('aria-label', label(t));
+  b.addEventListener('click',e=>{ e.stopPropagation(); act(t,b.getBoundingClientRect()); }); return b; }
+function label(t){ if(t==='close') return 'Fechar'; if(t==='del') return 'Deletar imóvel'; if(t.startsWith('oos:')) return (D.oos[t.slice(4)]||[''])[0]; if(t.startsWith('toast:')) return 'Copiar link'; return 'Abrir: '+title(nid(t.replace(/^o:/,''))); }
+function act(t,rect){
+  if(t==='close'){ closeOverlay(); return; }
+  if(t==='del'){ closeOverlay(); show(st.dev==='m'?'1-6390':'1-6260'); toast('1-7514'); return; }
+  if(t.startsWith('toast:')){ closeOverlay(); toast(nid(t.slice(6))); return; }
+  if(t.startsWith('oos:')){ closeOverlay(); oos(t.slice(4)); return; }
+  if(t.startsWith('o:')){ openOverlay(nid(t.slice(2)),rect); return; }
+  show(nid(t));
+}
+function kindOf(id){ for(const k in D.kinds) if(D.kinds[k].includes(id)) return k; return 'modal'; }
+function closeOverlay(){ layer.querySelectorAll('.scrim2,.ov:not(.toast),.oos').forEach(n=>n.remove()); st.ov=null; }
+function openOverlay(id,rect){
+  closeOverlay(); const o=D.screens[id]; if(!o) return; const k=kindOf(id);
+  const L=layer.getBoundingClientRect(); const fr=canvas.querySelector('.vframe').getBoundingClientRect();
+  const sc = k==='menu' ? st.scale : Math.min(1,Math.max(st.scale, st.dev==='m'?st.scale:.82));
+  const W=o.w*sc;
+  const scrim=document.createElement('div'); scrim.className='scrim2'+(k==='menu'?' clear':''); scrim.addEventListener('click',closeOverlay); layer.appendChild(scrim);
+  const box=document.createElement('div'); box.className='ov '+k; box.style.width=W+'px';
+  const inner=document.createElement('div'); inner.className='ovbox'; const img=new Image(); img.src='img/'+id+'.webp'; img.alt=title(id); inner.appendChild(img);
+  o.hs.forEach(h=>inner.appendChild(hsBtn(h,o.w,o.h)));
+  if(st.hint) inner.classList.add('hint');
+  box.appendChild(inner); layer.appendChild(box);
+  const Hh=o.h*sc; const lw=L.width, lh=L.height;
+  let left, top;
+  if(k==='menu' && rect){ left=rect.right-L.left-W; top=rect.bottom-L.top+4; if(top+Hh>lh-8) top=rect.top-L.top-Hh-4; left=Math.max(8,Math.min(left,lw-W-8)); top=Math.max(8,top); }
+  else if(k==='sheet'){ left=(fr.left-L.left)+(fr.width-W)/2; top=lh-Hh; if(top<8){ top=8; box.style.maxHeight=(lh-8)+'px'; box.style.overflowY='auto'; } }
+  else if(k==='drawer'){ left=Math.min(fr.right, L.right)-L.left-W; top=Math.max(0,fr.top-L.top); if(top+Hh>lh) top=Math.max(0,lh-Hh); }
+  else { left=(lw-W)/2; top=Math.max(12,(lh-Hh)/2); if(Hh>lh-24){ box.style.maxHeight=(lh-24)+'px'; box.style.overflowY='auto'; } }
+  box.style.left=Math.max(0,left)+'px'; box.style.top=top+'px';
+  st.ov=id; const first=inner.querySelector('.hs'); if(first) first.focus({preventScroll:true});
+}
+function toast(id){ const o=D.screens[id]; if(!o) return; layer.querySelectorAll('.ov.toast').forEach(n=>n.remove()); const L=layer.getBoundingClientRect(); const fr=canvas.querySelector('.vframe').getBoundingClientRect();
+  const W=Math.min(o.w*Math.max(st.scale,.6), fr.width-24); const box=document.createElement('div'); box.className='ov toast toastw'; box.style.width=W+'px'; box.style.left=((fr.left-L.left)+(fr.width-W)/2)+'px'; box.style.top='12px'; box.setAttribute('role','status');
+  const img=new Image(); img.src='img/'+id+'.webp'; img.alt=title(id); box.appendChild(img); layer.appendChild(box); setTimeout(()=>box.remove(),3000); }
+function oos(key){ const x=D.oos[key]; if(!x) return; const scrim=document.createElement('div'); scrim.className='scrim2'; scrim.addEventListener('click',closeOverlay); layer.appendChild(scrim);
+  const c=document.createElement('div'); c.className='oos'; c.setAttribute('role','alertdialog');
+  c.innerHTML='<small>Fora do escopo deste case</small><h4></h4><p></p><button class="btn primary">Continuar explorando</button>';
+  c.querySelector('h4').textContent=x[0]; c.querySelector('p').textContent=x[1]; c.querySelector('button').addEventListener('click',closeOverlay); layer.appendChild(c); c.querySelector('button').focus(); }
+
+$('#vclose').addEventListener('click',closeViewer);
+$('#vback').addEventListener('click',()=>{ const p=st.hist.pop(); if(p) show(p,false); });
+['d','c','m'].forEach(k=>$('#dev-'+k).addEventListener('click',e=>{ const t=e.currentTarget.dataset.target; if(t&&t!==st.screen) show(t); }));
+$('#vhint').addEventListener('click',()=>{ st.hint=!st.hint; $('#vhint').setAttribute('aria-pressed',String(st.hint)); document.querySelectorAll('.vframe,.ovbox').forEach(n=>n.classList.toggle('hint',st.hint)); });
+$('#vdec').addEventListener('click',e=>{ const k=e.currentTarget.dataset.key; if(k) openDec(k); });
+stage.addEventListener('scroll',()=>{ if(st.ov && kindOf(st.ov)==='menu') closeOverlay(); },{passive:true});
+let rz; window.addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(!viewer.hidden && st.screen){ const y=stage.scrollTop; const h=st.hist.slice(); show(st.screen,false); st.hist=h; $('#vback').disabled=!h.length; stage.scrollTop=y; } },150); });
+document.addEventListener('keydown',e=>{
+  if(!dec.hidden && e.key==='Escape'){ closeDec(); return; }
+  if(viewer.hidden) return;
+  if(e.key==='Escape'){ if(layer.querySelector('.scrim2')) closeOverlay(); else closeViewer(); return; }
+  if(e.target.closest('select')) return;
+  const t=D.trails[st.trail]; const list=t[st.dev]||t.d; const i=list.indexOf(st.screen);
+  if(e.key==='ArrowRight' && i>-1 && i<list.length-1){ show(list[i+1]); }
+  if(e.key==='ArrowLeft' && i>0){ show(list[i-1]); }
+  if(e.key.toLowerCase()==='h' && !e.metaKey && !e.ctrlKey){ $('#vhint').click(); }
+});
+
+/* ---------- page wiring ---------- */
+document.addEventListener('click',e=>{
+  const o=e.target.closest('[data-open]'); if(o){ openViewer(o.dataset.open); return; }
+  const db=e.target.closest('[data-decbtn]'); if(db){ const f=db.closest('[data-dec]'); if(f) openDec(f.dataset.dec); return; }
+  const dq=e.target.closest('[data-decopen]'); if(dq){ openDec(dq.dataset.decopen); return; }
+  const g=e.target.closest('[data-go]'); if(g){ const [t,s]=g.dataset.go.split(':'); openViewer(t,s); return; }
+  const fr=e.target.closest('figure.shot .frame'); if(fr){ const f=fr.closest('figure'); openViewer(f.dataset.trail,f.dataset.screen,f.dataset.overlay); }
+});
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.matches('[data-go]')){ e.preventDefault(); e.target.click(); } });
+document.querySelectorAll('figure.shot .frame').forEach(f=>{ f.tabIndex=0; f.setAttribute('role','button'); f.setAttribute('aria-label','Abrir no protótipo'); f.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); f.click(); } }); });
+
+// status switcher
+const SW=[["1-5024","Recusado","Editar análise","Não é possível seguir com a locação","Documentação, WhatsApp, substituir imóvel"],["1-5415","Aprovado","Enviar contrato","Sem sugestões","Documentação, enviar contrato, chat"],["1-5908","Aguardando","Falar conosco","Análise em andamento","Documentação, falar conosco, WhatsApp"],["1-5708","Em contrato","Gerenciar contrato","Sem sugestões","Só acompanhamento"]];
+document.querySelectorAll('#switch [data-st]').forEach(b=>b.addEventListener('click',()=>{ const x=SW[+b.dataset.st]; document.querySelectorAll('#switch [data-st]').forEach(z=>z.setAttribute('aria-pressed',String(z===b))); $('#sw-img').src='img/'+x[0]+'.webp'; $('#sw-img').alt='Painel do inquilino com status '+x[1]; $('#sw-cap').textContent='Painel — '+x[1]; $('#sw-id').textContent='Figma '+x[0].replace('-',':'); $('#sw-btn').textContent=x[2]; $('#sw-sug').textContent=x[3]; $('#sw-menu').textContent=x[4]; $('#sw-fig').dataset.screen=x[0]; }));
+
+// toc highlight
+const links=[...document.querySelectorAll('.toc a')]; const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>{ es.forEach(en=>{ if(en.isIntersecting){ links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)); } }); },{rootMargin:'-30% 0px -60% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+
+// deep link: #explorar-a etc.
+const m=location.hash.match(/^#explorar-(home|a|b|c|d|e)$/); if(m) openViewer(m[1]);
+})();
+</script>
+
+</body>
+</html>
